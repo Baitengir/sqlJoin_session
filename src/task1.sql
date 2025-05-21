@@ -143,58 +143,118 @@ WHERE price > 1000;
 SELECT *
 FROM reader;
 
--- 2.Читатели и библиотеки, где они зарегистрированы:
+-- 2. Читатели и библиотеки, где они зарегистрированы:
 SELECT r.full_name, l.name
 FROM reader r
          JOIN library l
               ON l.reader_id = r.id;
 
--- 3.Читатели и названия книг, которые они читают
+-- 3. Читатели и названия книг, которые они читают
 SELECT r.full_name AS readers_name,
        l.name      AS books_name
 FROM reader r
          JOIN Library l ON r.id = l.reader_id;
 
--- 4.Получить читателей и книги, которые они читают
+-- 4. Получить читателей и книги, которые они читают
 SELECT r.full_name AS reader_name,
        b.book_name AS book_name
 FROM library l
-JOIN reader r ON l.reader_id = r.id
-JOIN book b ON l.book_id = b.id;
+         JOIN reader r ON l.reader_id = r.id
+         JOIN book b ON l.book_id = b.id;
 
--- 5.Читатели и авторы прочитанных книг
+-- 5. Читатели и авторы прочитанных книг
 SELECT r.full_name AS readers_name,
        a.full_name AS authors_name
 FROM library l
-JOIN book b ON l.book_id = b.id
-JOIN author a ON A.book_id = b.id
-JOIN reader r ON r.id = l.reader_id;
+         JOIN book b ON l.book_id = b.id
+         JOIN author a ON A.book_id = b.id
+         JOIN reader r ON r.id = l.reader_id;
 
--- 6.Вывести читателей, читающих определённый жанр
+-- 6. Вывести читателей, читающих определённый жанр
 SELECT r.full_name AS reader_name,
-       b.genre AS book_genre
+       b.genre     AS book_genre
 FROM library l
-JOIN reader r ON l.reader_id = r.id
-JOIN book b ON l.book_id = b.id;
+         JOIN reader r ON l.reader_id = r.id
+         JOIN book b ON l.book_id = b.id;
 
--- 7.Получить всех читателей, читающих книги, изданные после 2010
+-- 7. Получить всех читателей, читающих книги, изданные после 2010
 SELECT r.full_name AS reader_name,
        b.book_name
 FROM library l
-JOIN reader r ON l.reader_id = r.id
-JOIN book b ON l.book_id = b.id
+         JOIN reader r ON l.reader_id = r.id
+         JOIN book b ON l.book_id = b.id
 WHERE b.published_year > 2010;
 
--- 8.Найти читателей, у которых книги написаны женщинами
+-- 8. Найти читателей, у которых книги написаны женщинами
 SELECT r.full_name AS reader_name,
        b.book_name
 FROM library l
-JOIN reader r ON l.reader_id = r.id
-JOIN book b ON l.book_id = b.id
-JOIN author a ON a.book_id = b.id
+         JOIN reader r ON l.reader_id = r.id
+         JOIN book b ON l.book_id = b.id
+         JOIN author a ON a.book_id = b.id
 WHERE a.gender = 'female';
 
+-- todo book requests:
+-- 1.Получить все книги
+SELECT *
+FROM book;
 
+-- 2. Книги и библиотеки, где они находятся
+SELECT b.book_name,
+       l.name AS library_name
+FROM library l
+JOIN book b ON l.book_id = b.id;
+
+-- 3. Получить книги и авторы
+SELECT b.book_name,
+       a.full_name AS author_name
+FROM book b
+JOIN author a ON a.book_id = b.id;
+
+-- 4. Получить книги и читатели
+SELECT b.book_name,
+       r.full_name AS reader_name
+FROM library l
+    JOIN book b ON l.book_id = b.id
+    JOIN reader r ON l.reader_id = r.id;
+
+-- 5. Книги, изданные после 2010 года
+SELECT *
+FROM book
+WHERE published_year > 2010;
+
+-- 6. Книги с определенным жанром
+SELECT book_name, book.genre
+FROM book;
+
+-- 7. Книги, которые забронированы
+SELECT *
+FROM book
+WHERE is_booked = 'true';
+
+-- 8. Количество книг по жанрам
+SELECT genre, COUNT(*)
+FROM Book
+GROUP BY genre;
+
+-- 9. Книга и библиотека, отсортированные по цене
+SELECT b.book_name,
+       l.name AS library_name,
+       b.price
+FROM library l
+JOIN book b ON l.book_id = b.id
+ORDER BY b.price;
+
+-- todo author queries:
+-- 1.Все авторы
+-- 2.Авторы и их книги
+-- 3.Авторы и библиотеки
+-- 4.Авторы и читатели
+-- 5.Авторы без книг
+-- 6.Авторы, у которых книги не забронированы
+-- 7.Авторы, написавшие книги в жанре "Programming"
+-- 8.Отсортировать авторов по алфавиту
+-- 9.Книга и библиотека, отсортированные по цене
 
 
 
