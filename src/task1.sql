@@ -203,20 +203,20 @@ FROM book;
 SELECT b.book_name,
        l.name AS library_name
 FROM library l
-JOIN book b ON l.book_id = b.id;
+         JOIN book b ON l.book_id = b.id;
 
 -- 3. Получить книги и авторы
 SELECT b.book_name,
        a.full_name AS author_name
 FROM book b
-JOIN author a ON a.book_id = b.id;
+         JOIN author a ON a.book_id = b.id;
 
 -- 4. Получить книги и читатели
 SELECT b.book_name,
        r.full_name AS reader_name
 FROM library l
-    JOIN book b ON l.book_id = b.id
-    JOIN reader r ON l.reader_id = r.id;
+         JOIN book b ON l.book_id = b.id
+         JOIN reader r ON l.reader_id = r.id;
 
 -- 5. Книги, изданные после 2010 года
 SELECT *
@@ -242,19 +242,67 @@ SELECT b.book_name,
        l.name AS library_name,
        b.price
 FROM library l
-JOIN book b ON l.book_id = b.id
+         JOIN book b ON l.book_id = b.id
 ORDER BY b.price;
 
 -- todo author queries:
 -- 1.Все авторы
--- 2.Авторы и их книги
+SELECT *
+FROM Author;
+
+-- 2. Авторы и их книги
+SELECT a.full_name AS author_name,
+       b.book_name
+FROM author a
+         JOIN book b ON a.book_id = b.id;
+
 -- 3.Авторы и библиотеки
--- 4.Авторы и читатели
--- 5.Авторы без книг
--- 6.Авторы, у которых книги не забронированы
--- 7.Авторы, написавшие книги в жанре "Programming"
--- 8.Отсортировать авторов по алфавиту
--- 9.Книга и библиотека, отсортированные по цене
+SELECT a.full_name AS author_name,
+       l.name      AS library_name
+FROM author a
+         JOIN book b ON a.book_id = b.id
+         JOIN library l ON b.id = l.book_id;
+
+-- 4. Авторы и читатели
+SELECT a.full_name AS author_name,
+       r.full_name AS reader_name
+FROM author a
+         JOIN book b ON a.book_id = b.id
+         JOIN library l ON b.id = l.book_id
+         JOIN reader r ON l.reader_id = r.id;
+
+-- 5. Авторы без книг
+SELECT a.full_name AS author_name
+FROM author a
+WHERE book_id IS NULL;
+
+-- 6. Авторы, у которых книги не забронированы
+SELECT *
+FROM Author a
+         JOIN Book b
+              ON a.book_id = b.id
+WHERE b.is_booked = 'false';
+
+-- 7. Авторы, написавшие книги в жанре "Programming"
+SELECT *
+FROM Author a
+         JOIN book b
+              ON a.book_id = b.id
+WHERE genre = 'Programming';
+
+-- 8. Отсортировать авторов по алфавиту
+SELECT *
+FROM Author
+ORDER BY full_name;
+
+-- 9. Книга и библиотека, отсортированные по цене
+SELECT b.price,
+       b.book_name,
+       l.name AS library_name
+FROM library l
+         JOIN book b
+              ON l.book_id = b.id
+ORDER BY price;
 
 
 
